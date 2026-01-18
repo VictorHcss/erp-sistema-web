@@ -1,15 +1,16 @@
 <?php
-// Exemplo de como deve ficar a sua conexão
-$host = getenv('MYSQLHOST') ?: 'localhost';
-$port = getenv('MYSQLPORT') ?: '3306';
-$db = getenv('MYSQLDATABASE') ?: 'erp_db';
-$user = getenv('MYSQLUSER') ?: 'root';
-$pass = getenv('MYSQLPASSWORD') ?: '';
+$host = getenv('MYSQL_HOST');
+$port = getenv('MYSQL_PORT');
+$db   = getenv('MYSQL_DATABASE');
+$user = getenv('MYSQL_USER');
+$pass = getenv('MYSQL_PASSWORD');
+
+$dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
 
 try {
-    // É essencial incluir a variável $port na Railway!
-    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
 } catch (PDOException $e) {
-    die("Erro na conexão: " . $e->getMessage());
+    die('Erro de conexão com o banco.');
 }
