@@ -19,3 +19,7 @@ function getCompanyId()
 {
     return $_SESSION['company_id'] ?? null;
 }
+function getCompanyName()
+{
+    return $_SESSION['company_name'] ?? null;
+}
