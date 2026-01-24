@@ -1,6 +1,18 @@
 /vendor/
 /node_modules/
+
 .env
 *.log
+
 /cache/
 /storage/
+
+# Testes locais
+config/testedb.php
+dbschema/
+
+config/local.php
+
+# IDE
+.vscode/
+.idea/

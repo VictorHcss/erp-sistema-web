@@ -806,39 +806,140 @@ tr:hover {
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-
-    body {
+    header {
+        /* Reset header styles for mobile sidebar behavior */
+        width: 260px;
+        min-width: 0;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        padding: 1rem;
+        background-color: var(--secondary-color);
+        display: flex;
         flex-direction: column;
     }
 
-    header {
-        width: 100%;
-        height: auto;
-        position: relative;
-        padding: 1rem;
+    header.active {
+        transform: translateX(0);
+        box-shadow: 4px 0 15px rgba(0,0,0,0.2);
     }
 
+    /* Overlay for mobile sidebar */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    /* Sidebar adjustments */
+    .sidebar {
+        /* Sidebar component specific overrides if needed */
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    /* Main content expands to full width */
     main {
-        margin-left: 0;
+        margin-left: 0 !important;
+        width: 100% !important;
         padding: 1rem;
+        max-width: 100vw;
+    }
+
+    /* Header/Toggle Button Visibility */
+    .mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        background: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        position: sticky;
+        top: 0;
+        z-index: 900;
+        margin-bottom: 1rem;
+        border-radius: var(--border-radius);
+    }
+
+    .toggle-sidebar-mobile {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0.5rem;
+    }
+
+    /* Form adjustments */
+    .form-row, .form-grid-3 {
+        grid-template-columns: 1fr;
     }
 
     .form-container {
-        padding: 1.5rem;
+        padding: 1.2rem;
     }
 
+    /* Dashboard Grid */
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 1rem;
+    }
+    
+    /* Table Responsive */
     .table-container {
-        padding: 1rem;
+        padding: 0.8rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        min-width: 600px; /* Ensure table scrolls instead of squishing */
     }
 
-    th,
-    td {
-        padding: 0.75rem;
+    th, td {
+        padding: 0.6rem;
         font-size: 0.85rem;
     }
 
-    .action-btn {
-        padding: 0.3rem 0.6rem;
+    /* Auth pages */
+    .auth-container {
+        width: 90%;
+        padding: 1.5rem;
+        max-height: 85vh;
+    }
+
+    .auth-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-header {
+        display: none;
+    }
+    .sidebar-overlay {
+        display: none;
     }
 }
 

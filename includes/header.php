@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 require_once __DIR__ . '/auth.php'; // Garante que o auth (e a hasRole) seja carregado primeiro
+=======
+>>>>>>> af8715a (Ajustes de layout, header e melhorias nos módulos)
 require_once __DIR__ . '/helpers.php';
 
 if (!isset($basePath)) {
@@ -56,3 +59,19 @@ if (!isset($basePath)) {
     </nav>
 </aside>
 
+<script>
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (sidebar) sidebar.classList.toggle('active');
+    if (overlay) overlay.classList.toggle('active');
+    
+    // Also handle desktop collapse if needed, but for mobile 'active' is key
+    // If not mobile, toggle 'collapsed' class
+    if (window.innerWidth > 768) {
+         sidebar.classList.toggle('collapsed');
+         const main = document.querySelector('main');
+         if (main) main.classList.toggle('expanded');
+    }
+}
+</script>
