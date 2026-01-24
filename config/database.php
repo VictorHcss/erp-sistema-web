@@ -6,17 +6,17 @@ if (!$databaseUrl) {
     die('MYSQL_URL não definida');
 }
 
-$db = parse_url($databaseUrl);
+$parts = parse_url($databaseUrl);
 
-$host = $db['host'];
-$port = $db['port'] ?? 3306;
-$user = $db['user'];
-$pass = $db['pass'];
-$name = ltrim($db['path'], '/');
+$host = $parts['host'];
+$port = $parts['port'] ?? 3306;
+$user = $parts['user'];
+$pass = $parts['pass'];
+$db   = ltrim($parts['path'], '/');
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host;port=$port;dbname=$name;charset=utf8mb4",
+        "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4",
         $user,
         $pass,
         [
