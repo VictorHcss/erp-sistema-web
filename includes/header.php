@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/helpers.php';
+
 if (!isset($basePath)) {
     $basePath = '';
 }
