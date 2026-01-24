@@ -1,8 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require_once __DIR__ . '/../../../includes/auth.php';
 require_once __DIR__ . '/../../../config/database.php';
 
@@ -63,35 +59,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h2><i class="fas fa-user-plus"></i> Novo Usuário</h2>
 
         <?php if ($erro): ?>
-            <div class="error-message"><?= htmlspecialchars($erro) ?></div>
+            <div class="error-message"><i class="fas fa-exclamation-circle"></i> <?= htmlspecialchars($erro) ?></div>
         <?php endif; ?>
 
         <?php if ($sucesso): ?>
-            <div class="success-message"><?= htmlspecialchars($sucesso) ?></div>
+            <div class="success-message"><i class="fas fa-check-circle"></i> <?= htmlspecialchars($sucesso) ?></div>
         <?php endif; ?>
 
         <form method="POST" class="form-container">
             <div class="form-row">
                 <div class="form-group">
                     <label>Nome *</label>
-                    <input type="text" name="name" required>
+                    <input type="text" name="name" class="form-control" placeholder="Digite o nome completo" required>
                 </div>
 
                 <div class="form-group">
                     <label>Email *</label>
-                    <input type="email" name="email" required>
+                    <input type="email" name="email" class="form-control" placeholder="exemplo@email.com" required>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>Senha *</label>
-                    <input type="password" name="password" required>
+                    <input type="password" name="password" class="form-control" placeholder="Crie uma senha" required>
                 </div>
 
                 <div class="form-group">
                     <label>Função</label>
-                    <select name="role">
+                    <select name="role" class="form-control">
                         <option value="user">Vendedor</option>
                         <option value="admin">Administrador</option>
                     </select>
@@ -100,10 +96,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div style="margin-top:2rem; display:flex; justify-content:flex-end; gap:1rem;">
                 <a href="users.php" class="btn">Cancelar</a>
-                <button type="submit" class="btn btn-success">Cadastrar</button>
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> Cadastrar
+                </button>
             </div>
         </form>
     </main>
 </body>
-
 </html>
