@@ -7,9 +7,11 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Helper para verificar role
-function hasRole($role)
-{
-    return isset($_SESSION['role']) && $_SESSION['role'] === $role;
+if (!function_exists('hasRole')) {
+    function hasRole($role)
+    {
+        return isset($_SESSION['role']) && $_SESSION['role'] === $role;
+    }
 }
 
 // Helper para obter company_id
