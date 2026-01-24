@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/auth.php'; // Garante que o auth (e a hasRole) seja carregado primeiro
 require_once __DIR__ . '/helpers.php';
 
 if (!isset($basePath)) {
