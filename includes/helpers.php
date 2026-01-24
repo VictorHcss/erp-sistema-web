@@ -1,6 +1,9 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-function hasRole($role)
+function hasRole(string $role): bool
 {
-    return isset($_SESSION['role']) && $_SESSION['role'] === $role;
+    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === $role;
 }
