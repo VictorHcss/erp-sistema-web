@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 require_once __DIR__ . '/auth.php'; // Garante que o auth (e a hasRole) seja carregado primeiro
 =======
 >>>>>>> af8715a (Ajustes de layout, header e melhorias nos módulos)
