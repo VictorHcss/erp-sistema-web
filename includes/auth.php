@@ -1,12 +1,13 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: /login.php");
     exit;
 }
 
-// Helper para verificar role
 if (!function_exists('hasRole')) {
     function hasRole($role)
     {
@@ -14,17 +15,7 @@ if (!function_exists('hasRole')) {
     }
 }
 
-// Helper para obter company_id
 function getCompanyId()
 {
     return $_SESSION['company_id'] ?? null;
 }
-
-function getCompanyName()
-{
-    global $pdo;
-    $stmt = $pdo->prepare("SELECT name FROM companies WHERE id = ?");
-    $stmt->execute([getCompanyId()]);
-    return $stmt->fetchColumn() ?: "Empresa Desconhecida";
-}
-?>
