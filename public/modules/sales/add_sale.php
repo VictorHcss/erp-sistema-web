@@ -27,142 +27,6 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Nova Venda</title>
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* Ajustes locais para add_sale.php */
-        
-        /* Ajuste para Selects dentro de .input-icon */
-        .input-icon select.form-control {
-            padding-left: 2.8rem;
-            appearance: none; /* Remove seta padrão */
-            background-image: none; /* Remove seta padrão se houver conflito */
-            width: 100%;
-            height: 45px; /* Altura consistente */
-        }
-        
-        /* Garantir que a seta customizada do CSS funcione se aplicável, 
-           mas como .input-icon sobrepõe, vamos simplificar */
-        .input-icon select {
-            cursor: pointer;
-        }
-
-        /* Estilo do botão de remover */
-        .btn-remove {
-            background-color: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-remove:hover {
-            background-color: #ef5350;
-            color: white;
-            transform: scale(1.1);
-            box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
-        }
-
-        /* Card do Total Geral */
-        .total-summary-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border: 1px solid rgba(67, 97, 238, 0.2);
-            border-radius: 16px;
-            padding: 1.5rem 2rem;
-            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.1);
-            display: inline-flex;
-            flex-direction: column;
-            align-items: flex-end;
-            min-width: 250px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .total-summary-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: var(--primary-color);
-        }
-
-        .total-summary-card .label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .total-summary-card .amount {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            line-height: 1;
-        }
-
-        .total-summary-card .currency {
-            font-size: 1.2rem;
-            vertical-align: super;
-            margin-right: 5px;
-        }
-
-        /* Ajustes de layout */
-        /* Header padrão restaurado para fundo branco */
-        .page-header {
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .page-header h2 {
-            margin: 0;
-            color: var(--text-color);
-        }
-        
-        .page-header p {
-            margin: 0;
-            color: var(--text-muted);
-        }
-
-        /* Responsividade da tabela */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        /* Grid gap override */
-        .form-row {
-            gap: 1.5rem;
-        }
-
-        /* Flex Row for specific layouts where Grid is not ideal */
-        .form-row-flex {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .col-grow-2 { flex: 2; min-width: 250px; }
-        .col-grow-3 { flex: 3; min-width: 250px; }
-        .col-fixed-150 { flex: 0 0 150px; }
-        .col-auto { flex: 0 0 auto; }
-
-        /* Input Icon Wrapper fix */
-        .input-icon-wrapper {
-            position: relative;
-            width: 100%;
-        }
-    </style>
 </head>
 
 <body>
@@ -247,10 +111,10 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <thead>
                             <tr>
                                 <th>Produto</th>
-                                <th style="width: 100px;">Qtd</th>
+                                <th class="col-qty">Qtd</th>
                                 <th>Valor Unit.</th>
                                 <th>Total</th>
-                                <th style="width: 80px; text-align: center;">Ação</th>
+                                <th class="col-action">Ação</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -344,11 +208,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 tbody.innerHTML += `
             <tr>
-                <td><strong>${item.name}</strong></td>
-                <td>${item.quantity}</td>
-                <td>R$ ${item.unit_price.toFixed(2)}</td>
-                <td style="color: var(--primary-color); font-weight: bold;">R$ ${itemTotal.toFixed(2)}</td>
-                <td style="text-align: center;">
+                <td data-label="Produto"><strong>${item.name}</strong></td>
+                <td data-label="Qtd">${item.quantity}</td>
+                <td data-label="Valor Unit.">R$ ${item.unit_price.toFixed(2)}</td>
+                <td data-label="Total" style="color: var(--primary-color); font-weight: bold;">R$ ${itemTotal.toFixed(2)}</td>
+                <td data-label="Ação" style="text-align: center;">
                     <button type="button" class="btn-remove" onclick="removeItem(${index})" title="Remover item">
                         <i class="fas fa-trash-alt"></i>
                     </button>

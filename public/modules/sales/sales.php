@@ -129,105 +129,19 @@ $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </main>
 
-    <!-- Modal Structure -->
-    <div id="saleModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <div id="modalBody">
+    <!-- Modal Structure (Consistent with style.css) -->
+    <div id="saleModalOverlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-invoice-dollar"></i> Detalhes da Venda</h3>
+                <button class="modal-close" onclick="document.getElementById('saleModalOverlay').classList.remove('active')">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
                 <!-- Conteúdo carregado via AJAX -->
             </div>
         </div>
     </div>
 
     <script src="../../js/main.js"></script>
-
-    <script>
-        function viewSale(id) {
-            const modal = document.getElementById('saleModal');
-            const modalBody = document.getElementById('modalBody');
-
-            if (!modal || !modalBody) return;
-
-            // Show modal immediately
-            modal.style.display = 'block';
-            modalBody.innerHTML = '<p style="text-align:center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Carregando detalhes...</p>';
-
-            // Fetch details
-            fetch('sale_view.php?id=' + id + '&modal=1')
-                .then(response => response.text())
-                .then(html => {
-                    modalBody.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    modalBody.innerHTML = '<p style="color:red; text-align:center;">Erro ao carregar detalhes.</p>';
-                });
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('saleModal');
-            if (modal) modal.style.display = 'none';
-        }
-
-        // Close when clicking outside
-        window.onclick = function (event) {
-            const modal = document.getElementById('saleModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
-    </script>
-
-    <style>
-        /* Modal CSS */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.6);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 800px;
-            border-radius: 8px;
-            position: relative;
-        }
-
-        .close-modal {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close-modal:hover,
-        .close-modal:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .btn-view {
-            text-decoration: none !important;
-            margin-right: 5px;
-            display: inline-block;
-        }
-
-        .btn-view i {
-            text-decoration: none;
-        }
-    </style>
 </body>
-
 </html>

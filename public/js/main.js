@@ -435,8 +435,8 @@ window.App = {
 
             // Modal Container
             if (!document.querySelector('.modal-overlay')) {
-                const modalphp = `
-                    <div class="modal-overlay" iUI:d="modalOverlay">
+                const modalHTML = `
+                    <div class="modal-overlay" id="modalOverlay">
                         <div class="modal">
                             <div class="modal-header">
                                 <h3 id="modalTitle">Título</h3>
@@ -550,9 +550,10 @@ window.App = {
                 columns.forEach(col => {
                     let val = item[col.key || col];
                     if (col.format) val = col.format(val);
-                    row += `<td>${val}</td>`;
+                    const label = col.label || col.key || col;
+                    row += `<td data-label="${label}">${val}</td>`;
                 });
-                row += `<td>
+                row += `<td data-label="Ações">
                     <button class="btn-delete" onclick="App.UI.deleteItem('${key}', ${item.id})">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -743,26 +744,53 @@ window.App = {
 window.goToModule = (url) => window.location.href = url;
 
 window.toggleSidebar = function () {
-    const sidebar = document.getElementById('sidebar');
-    const main = document.querySelector('main');
-
-    if (sidebar) {
+        const sidebar = document.getElementById('sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    
+    // Mobile logic
+    if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
+    } else {
+        // Desktop logic
         sidebar.classList.toggle('collapsed');
-        if (main) {
-            main.classList.toggle('expanded');
-        }
+        const main = document.querySelector('main');
+        if (main) main.classList.toggle('expanded');
     }
 };
 
+// Close sidebar when clicking a link on mobile
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.sidebar nav a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                window.toggleSidebar();
+            }
+        });
+    });
+});
+
 function viewSale(id) {
-    const modal = document.getElementById("saleModal");
+    // Tenta encontrar o overlay pelo ID novo ou pelo antigo (compatibilidade)
+    const overlay = document.getElementById("saleModalOverlay") || document.getElementById("saleModal");
     const modalBody = document.getElementById("modalBody");
 
-    if (!modal || !modalBody) return;
+    if (!overlay || !modalBody) return;
 
-    modal.style.display = "block";
+    // Use class 'active' if it's the new overlay style, otherwise display block
+    if (overlay.classList.contains('modal-overlay')) {
+        overlay.classList.add('active');
+    } else {
+        overlay.style.display = "block";
+    }
+    
     modalBody.innerHTML = "<div style='text-align:center; padding:2rem;'><i class='fas fa-spinner fa-spin'></i> Carregando detalhes...</div>";
 
+    // Adjust path if needed. Assuming relative path from where script is called might be tricky.
+    // Ideally use absolute path or base path. 
+    // Since this is in public/js/main.js, and called from modules/sales/sales.php,
+    // the fetch URL 'sale_view.php' is relative to sales.php.
+    
     fetch('sale_view.php?id=' + id + '&modal=1')
         .then(response => {
             if (!response.ok) throw new Error('Erro na requisição');
@@ -779,15 +807,28 @@ function viewSale(id) {
 
 document.addEventListener('DOMContentLoaded', () => {
     window.App.init();
-    const modal = document.getElementById("saleModal");
-    if (modal) {
-        const closeBtn = modal.querySelector(".close-modal");
+    
+    // Setup close handlers for sale modal
+    const overlay = document.getElementById("saleModalOverlay");
+    if (overlay) {
+        const closeBtn = overlay.querySelector(".modal-close");
+        if (closeBtn) closeBtn.onclick = () => overlay.classList.remove("active");
+        
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) overlay.classList.remove("active");
+        });
+    }
+
+    // Old modal support
+    const oldModal = document.getElementById("saleModal");
+    if (oldModal && !overlay) {
+        const closeBtn = oldModal.querySelector(".close-modal");
         if (closeBtn) {
-            closeBtn.onclick = () => modal.style.display = "none";
+            closeBtn.onclick = () => oldModal.style.display = "none";
         }
         window.onclick = (event) => {
-            if (event.target == modal) {
-                modal.style.display = "none";
+            if (event.target == oldModal) {
+                oldModal.style.display = "none";
             }
         };
     }

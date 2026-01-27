@@ -54,44 +54,41 @@ $items = $stmtItems->fetchAll();
 
         <h2 style="margin-top: 0;"><i class="fas fa-shopping-cart"></i> Detalhes da Venda #<?= $sale['id'] ?></h2>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 2rem;">
-            <div class="card" style="padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #fff;">
-                <h3 style="margin-top: 0; color: #3498db;"><i class="fas fa-user"></i> Cliente</h3>
-                <p><strong>Nome:</strong> <?= htmlspecialchars($sale['client_name'] ?? 'Cliente Removido') ?></p>
-                <p><strong>E-mail:</strong> <?= htmlspecialchars($sale['client_email'] ?? '-') ?></p>
-                <p><strong>Telefone:</strong> <?= htmlspecialchars($sale['client_phone'] ?? '-') ?></p>
+        <div class="dashboard-grid">
+            <div class="card-stat card-blue" style="display: block; border-left: 4px solid #3498db; padding: 1.5rem;">
+                <h3 style="margin-top: 0; color: #3498db; margin-bottom: 1rem;"><i class="fas fa-user"></i> Cliente</h3>
+                <p style="font-size: 1rem; margin-bottom: 0.5rem;"><strong>Nome:</strong> <?= htmlspecialchars($sale['client_name'] ?? 'Cliente Removido') ?></p>
+                <p style="font-size: 1rem; margin-bottom: 0.5rem;"><strong>E-mail:</strong> <?= htmlspecialchars($sale['client_email'] ?? '-') ?></p>
+                <p style="font-size: 1rem; margin-bottom: 0;"><strong>Telefone:</strong> <?= htmlspecialchars($sale['client_phone'] ?? '-') ?></p>
             </div>
-            <div class="card" style="padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #fff;">
-                <h3 style="margin-top: 0; color: #3498db;"><i class="fas fa-info-circle"></i> Resumo</h3>
-                <p><strong>Status:</strong> <span class="badge"
+            <div class="card-stat card-green" style="display: block; border-left: 4px solid #2ecc71; padding: 1.5rem;">
+                <h3 style="margin-top: 0; color: #2ecc71; margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> Resumo</h3>
+                <p style="font-size: 1rem; margin-bottom: 0.5rem;"><strong>Status:</strong> <span class="badge"
                         style="background: #2ecc71; color: white; padding: 2px 8px; border-radius: 4px;"><?= $sale['status'] ?></span>
                 </p>
-                <p><strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($sale['created_at'])) ?></p>
-                <p><strong>Total:</strong> R$ <?= number_format($sale['total'], 2, ',', '.') ?></p>
+                <p style="font-size: 1rem; margin-bottom: 0.5rem;"><strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($sale['created_at'])) ?></p>
+                <p style="font-size: 1rem; margin-bottom: 0;"><strong>Total:</strong> R$ <?= number_format($sale['total'], 2, ',', '.') ?></p>
             </div>
         </div>
 
         <div class="table-container">
             <h3><i class="fas fa-box"></i> Itens do Pedido</h3>
-            <table id="tableModule" style="width: 100%; border-collapse: collapse;">
+            <table>
                 <thead>
-                    <tr style="background: #f4f4f4; text-align: left;">
-                        <th style="padding: 10px; border-bottom: 2px solid #ddd;">Produto</th>
-                        <th style="padding: 10px; border-bottom: 2px solid #ddd;">Qtd</th>
-                        <th style="padding: 10px; border-bottom: 2px solid #ddd;">Unitário</th>
-                        <th style="padding: 10px; border-bottom: 2px solid #ddd;">Subtotal</th>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Qtd</th>
+                        <th>Unitário</th>
+                        <th>Subtotal</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($items as $item): ?>
                         <tr>
-                            <td style="padding: 10px; border-bottom: 1px solid #eee;">
-                                <?= htmlspecialchars($item['product_name'] ?? 'Não encontrado') ?></td>
-                            <td style="padding: 10px; border-bottom: 1px solid #eee;"><?= $item['quantity'] ?></td>
-                            <td style="padding: 10px; border-bottom: 1px solid #eee;">R$
-                                <?= number_format($item['unit_price'], 2, ',', '.') ?></td>
-                            <td style="padding: 10px; border-bottom: 1px solid #eee;">R$
-                                <?= number_format($item['quantity'] * $item['unit_price'], 2, ',', '.') ?></td>
+                            <td data-label="Produto"><?= htmlspecialchars($item['product_name'] ?? 'Não encontrado') ?></td>
+                            <td data-label="Qtd"><?= $item['quantity'] ?></td>
+                            <td data-label="Unitário">R$ <?= number_format($item['unit_price'], 2, ',', '.') ?></td>
+                            <td data-label="Subtotal">R$ <?= number_format($item['quantity'] * $item['unit_price'], 2, ',', '.') ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -105,14 +102,13 @@ $items = $stmtItems->fetchAll();
             </table>
         </div>
 
-        <div
-            style="margin-top: 30px; padding: 15px; background: #f9f9f9; border-radius: 8px; border-left: 5px solid #3498db; font-size: 0.85rem;">
+        <div class="form-container" style="margin-top: 2rem; border-left: 5px solid #3498db; padding: 1.5rem;">
             <h4 style="margin-top: 0;"><i class="fas fa-fingerprint"></i> Auditoria do Registro</h4>
-            <p><i class="fas fa-plus-circle"></i> Venda registrada por:
+            <p style="margin-bottom: 0.5rem;"><i class="fas fa-plus-circle"></i> Venda registrada por:
                 <strong><?= htmlspecialchars($sale['creator_name'] ?? 'Sistema') ?></strong> em
                 <?= date('d/m/Y H:i', strtotime($sale['created_at'])) ?></p>
             <?php if ($sale['editor_name']): ?>
-                <p><i class="fas fa-pen-square"></i> Última alteração por:
+                <p style="margin-bottom: 0;"><i class="fas fa-pen-square"></i> Última alteração por:
                     <strong><?= htmlspecialchars($sale['editor_name']) ?></strong> em
                     <?= date('d/m/Y H:i', strtotime($sale['updated_at'])) ?></p>
             <?php endif; ?>

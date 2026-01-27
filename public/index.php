@@ -164,14 +164,21 @@ $percentualMeta = min(($totalSalesValue / $metaMensal) * 100, 100);
                     </div>
                 </div>
             </div>
-            <div class="dashboard-grid" style="grid-template-columns: 2fr 1fr;">
+            <div class="dashboard-grid-charts">
                 <div class="table-container">
-                    <h3><i class="fas fa-trophy"></i> Desempenho por Vendedor</h3>
+                    <h3><i class="fas fa-chart-bar"></i> Vendas por Vendedor (Mês Atual)</h3>
                     <canvas id="vendasVendedorChart"></canvas>
                 </div>
-                <div class="table-container">
-                    <h3><i class="fas fa-tachometer-alt"></i> Atingimento de Meta</h3>
+                
+                <div class="table-container" style="text-align: center;">
+                    <h3><i class="fas fa-bullseye"></i> Meta Mensal</h3>
                     <canvas id="metaGaugeChart"></canvas>
+                    <p style="margin-top:1rem; font-size:1.2rem; font-weight:bold; color: #4361ee">
+                        <?php echo number_format($percentualMeta, 1, ',', '.'); ?>%
+                    </p>
+                    <p style="font-size:0.9rem; color:#888">
+                        Meta: R$ <?php echo number_format($metaMensal, 2, ',', '.'); ?>
+                    </p>
                 </div>
             </div>
 
@@ -211,10 +218,10 @@ $percentualMeta = min(($totalSalesValue / $metaMensal) * 100, 100);
                                 $statusStyle = "color: #e74c3c; font-weight: bold;";
 
                             echo "<tr>";
-                            echo "<td>#{$row['id']}</td>";
-                            echo "<td>" . htmlspecialchars($row['client_name'] ?? 'Removido') . "</td>";
-                            echo "<td>R$ " . number_format($row['total'], 2, ',', '.') . "</td>";
-                            echo "<td><span style='{$statusStyle}'>" . htmlspecialchars($row['status']) . "</span></td>";
+                            echo "<td data-label='ID'>#{$row['id']}</td>";
+                            echo "<td data-label='Cliente'>" . htmlspecialchars($row['client_name'] ?? 'Removido') . "</td>";
+                            echo "<td data-label='Total'>R$ " . number_format($row['total'], 2, ',', '.') . "</td>";
+                            echo "<td data-label='Status'><span style='{$statusStyle}'>" . htmlspecialchars($row['status']) . "</span></td>";
                             echo "</tr>";
                         }
                         ?>
